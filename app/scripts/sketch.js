@@ -15,15 +15,18 @@ let points = [];
 
 function mySketch(s){
 
+  function createRandomPoints(n, initPosition) {
 
-  function createRandomPoints(n = 1, initPosition = {
-    x: 0.3333 * s.width ,
-    y: 0.3333 * s.height
-  }) {
+    n = n || 1;
 
-      let hueStart = s.random(0,255);
-      let hueStop = s.random(0,255);
-      for (let i = 0; i < n; i++) {
+    initPosition = initPosition || {
+      x: 0.15 * s.width ,
+      y: 0.25 * s.height
+    }; 
+
+    let hueStart = s.random(0,255);
+    let hueStop = s.random(0,255);
+    for (let i = 0; i < n; i++) {
 
       // randomize initial point settings
       let initVelocity = {
@@ -32,7 +35,7 @@ function mySketch(s){
       };
       let initAccel = {
         x: 0,
-        y: s.random(1)
+        y: 0.4
       };
       let hue = s.random(hueStart, hueStop);
       let color = [hue, 30, 255];
@@ -47,8 +50,8 @@ function mySketch(s){
 
   s.setup = function (){
 
-    // create canvas and put in canvasWrapper
     let $canvasWrapper = $(config.canvasWrapper);
+
     s.createCanvas(
       $canvasWrapper.innerWidth(),
       $canvasWrapper.innerHeight()
@@ -64,7 +67,6 @@ function mySketch(s){
   };
 
   s.draw = function() {
-    //s.clear();
     for (let i = 0, len = points.length; i < len; i++) {
       points[i].update();
       points[i].render();

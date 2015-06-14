@@ -4,12 +4,13 @@
 'use strict';
 let p5 = require('p5');
 let $ = require('jquery');
+let Point = require('./point');
 
 let config = {
   canvasWrapper: '.canvas-wrapper'
 };
 
-let pointList = [];
+let points = [];
 
 function mySketch(s){
 
@@ -24,17 +25,29 @@ function mySketch(s){
 
     // modes
     s.ellipseMode(s.RADIUS);
+    s.fill(0);
+
+    // setup points
+    let initPosition = s.createVector(500, 500),
+        initVelocity = s.createVector(20, 10),
+        p = new Point(initPosition, initVelocity);
+        p.setSketch(s);
+
+    points.push(p);
 
   };
 
   s.draw = function() {
+    for (let i = 0, len = points.length; i < len; i++) {
+      points[i].update();
+      points[i].render();
+    }
   };
 
   s.windowResized = function() {
-    let $canvasWrapper = $(config.canvasWrapper);
-
-    let w = $canvasWrapper.innerWidth();
-    let h = $canvasWrapper.height();
+    let $canvasWrapper = $(config.canvasWrapper),
+        w = $canvasWrapper.innerWidth(),
+        h = $canvasWrapper.height();
 
     // put in canvasWrapper
     s.resizeCanvas(w,h-3);
